@@ -64,35 +64,34 @@ class War {
         this.saxonArmy.push(saxon)
     }
 
-    vikingAttack() {
-        let randomViking = Math.floor(Math.random() * this.vikingArmy.length)
-        let randomSaxon = Math.floor(Math.random() * this.saxonArmy.length)
-        let saxon = this.saxonArmy[randomSaxon]
-        let viking = this.vikingArmy[randomViking]
+    battle(attackingArmy, defendingArmy) {
+        let randomAttacker = Math.floor(Math.random() * attackingArmy.length)
+        let randomVictim = Math.floor(Math.random() * defendingArmy.length)
+        let attacker = attackingArmy[randomAttacker]
+        let victim = defendingArmy[randomVictim]
 
-        let music = saxon.receiveDamage(viking.attack())
-
-        if (saxon.health <= 0) {
-            this.saxonArmy.splice(randomSaxon, 1)
+        const music = victim.receiveDamage(attacker.attack())
+        if (victim.health <= 0) {
+            defendingArmy.splice(randomVictim, 1)
         }
         return music
+    }
+
+    vikingAttack() {
+        return this.battle(this.vikingArmy, this.saxonArmy)
     }
 
     saxonAttack() {
-        let randomViking = Math.floor(Math.random() * this.vikingArmy.length)
-        let randomSaxon = Math.floor(Math.random() * this.saxonArmy.length)
-        let saxon = this.saxonArmy[randomSaxon]
-        let viking = this.vikingArmy[randomViking]
-
-        let music = viking.receiveDamage(saxon.attack())
-
-        if (viking.health <= 0) {
-            this.vikingArmy.splice(randomViking, 1)
-        }
-        return music
+        return this.battle(this.saxonArmy, this.vikingArmy)
     }
 
     showStatus() {
-
+        if (!this.saxonArmy.length) {
+            return "Vikings have won the war of the century!"
+        } 
+        if (!this.vikingArmy.length) {
+            return "Saxons have fought for their lives and survived another day..."
+        }
+        return "Vikings and Saxons are still in the thick of battle."
     }
 }
